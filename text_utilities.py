@@ -19,7 +19,7 @@ def getQuantity_string(number, lang):
 def read_txtLines(file):
 	try:
 		with open(file,'r') as textfile:
-			lines = textfile.readlines()
+			lines = textfile.read().splitlines()
 			return lines
 	except Exception as e:
 		print(colored(e,'red')) 
