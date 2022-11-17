@@ -2,29 +2,39 @@ import bcrypt
 import sys
 import errno
 
-def generate_password_hash(password, salt_rounds):
+def generate_password_hash(password: str, salt_rounds: int) -> str:
     if(salt_rounds < 10 and salt_rounds > 20):
-        print('Salt rounds deben estar en el rango [10,20]')
+        print('Salt rounds must be in range [10,20]')
         sys.exit(errno.EINVAL)
     else:
         print('Salt rounds: ',salt_rounds)
         password_encoded = password.encode('utf-8')
-        print('Password codificado: ',password_encoded)
+        print('Coded password: ',password_encoded)
         seed = bcrypt.gensalt(salt_rounds)
-        print('Semilla (seed): ',seed)
+        print('Seed: ',seed)
         hashed = bcrypt.hashpw(password_encoded,seed)
-        print('Password codificado y cifrado: ',hashed)
+        print('Coded and hashed password: ',hashed)
         return hashed
 
-def password_hash_check(password, hash):
+def password_hash_check(password: str, hash: str) -> bool: 
     password_encoded = password.encode('utf-8')
     hash_encoded = hash.encode('utf-8')
-    print('Password codificado: ',password_encoded)
-    print('Hash codificado: ',hash_encoded)
+    print('Coded password: ',password_encoded)
+    print('Coded Hash: ',hash_encoded)
 
-    if bcrypt.checkpw(password_encoded,hash_encoded):
-        print('Password match!!')
-        return True
-    else:
-        print('Password mismatch')
-        return False
+    return bcrypt.checkpw(password_encoded,hash_encoded)
+
+
+if __name__ == '__main__':
+    import sys
+    try:
+        password = sys.argv[1]
+        pwd_hash = sys.argv[2]
+        
+        if( password_hash_check(password=password,hash=pwd_hash)):
+            print('Password match')
+        else:
+            print('Password mismatch')
+    
+    except Exception as e:
+        print(e)    
