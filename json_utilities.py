@@ -11,6 +11,6 @@ def json_to_dict(json_file):
 def dict_to_json(dict,json_file):
     try:
         with open(json_file,'w') as file:
-            json.dump(dict,file)
+            json.dump(dict,file,ensure_ascii=False)
     except Exception as e:
         print(colored(e,'red'))
